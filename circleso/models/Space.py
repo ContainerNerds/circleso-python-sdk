@@ -1,6 +1,6 @@
 import json
 
-class Spaces:
+class Space:
     
     def __init__(self,
                     id=None,
