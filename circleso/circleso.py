@@ -43,7 +43,6 @@ class CircleRestClient():
             return r.json()
         else:
             return None
-
     
     # "Communities" methods
     # @doc: https://api.circle.so/#ad5f356e-0038-4706-a30a-ed4a0fcd306a
@@ -112,9 +111,71 @@ class CircleRestClient():
     # "Space group members" methods
 
     # "Spaces" methods
+    def get_space_index(self, cid):
+        r = self._get('/spaces', params={
+            'community_id': cid,
+        })
+
+        if r.status_code == 200:
+            return r.json()
+        else:
+            return None
+
+    def get_space(self, cid, data):
+
+        payload = json.loads(data)
+
+        r = self._get('/spaces/' + str(payload['id']), params={
+            'community_id': cid,
+        })
+
+        if r.status_code == 200:
+            return r.json()
+        else:
+            return None
+
+    def create_space(self, cid, data):
+
+        payload = json.loads(data)
+
+        r = self._post('/spaces', params={
+            'community_id': cid,
+            'name': payload['name'],
+            # 'is_private': payload['is_private'],
+            # 'is_hidden_from_non_members': payload['hide_post_settings'],
+            # 'is_hidden': False,
+            'slug': payload['slug'],
+            'space_group_id': payload['space_group_id'],
+            # 'space_type': 'basic',
+            # 'display_view': 'list',
+        })
+
+        if r.status_code == 200:
+            return r.json()
+        else:
+            print(r.text)
+            return None
 
     # "Space members" methods
 
     # "Posts" methods
+    # def get_posts_index(self, cid, sid):
+    #     r = self._get('/spaces/' + sid + '/posts', params={
+    #         'community_id': cid,
+    #     })
+
+    #     if r.status_code == 200:
+    #         return r.json()
+    #     else:
+    #         return None
 
     # "Comments" methods
+    # def get_comments_index(self, cid, sid):
+    #     r = self._get('/spaces/' + sid + '/comments', params={
+    #         'community_id': cid,
+    #     })
+
+    #     if r.status_code == 200:
+    #         return r.json()
+    #     else:
+    #         return None

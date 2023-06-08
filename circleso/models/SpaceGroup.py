@@ -3,6 +3,7 @@ import json
 class SpaceGroup:
     
     def __init__(self,
+                    id=None,
                     name=None,
                     slug=None,
                     add_members_to_space_group_on_space_join=False,
@@ -12,6 +13,7 @@ class SpaceGroup:
                     is_hidden_from_non_members=False,
                     space_order_array=[],
                     position=1) -> None:
+        self.id = id
         self.name = name
         self.slug = slug
         self.add_members_to_space_group_on_space_join = add_members_to_space_group_on_space_join
