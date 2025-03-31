@@ -56,7 +56,7 @@ class CircleRestClient():
 
     # @doc: https://api.circle.so/#2c3224e1-f3bb-49b4-b84a-9f7c64496c6c
     # @url: https://app.circle.so/api/v1/communities/{{community_id}}?slug=super-community
-    def get_show_community(self, cid, params=None):
+    def get_community(self, cid, params=None):
         if params is None:
             return None
 
@@ -80,7 +80,7 @@ class CircleRestClient():
 
     # @doc: https://api.circle.so/#1fc9cbd1-6b59-44b9-8026-e82516df7191
     # @url: https://app.circle.so/api/v1/space_groups/:id?community_id={{community_id}}
-    def get_show_space_group(self, cid, sgid):
+    def get_space_group(self, cid, sgid):
         r = self._get('/space_groups/' + sgid, params={
             'community_id': cid
         })
@@ -98,20 +98,24 @@ class CircleRestClient():
         if 'name' not in payload or 'slug' not in payload:
             return None
 
-        # r = self._post('/space_groups', params={
-        #     'community_id': cid
-        # }, data=payload)
+        print(payload)
 
-        # if r.status_code == 200:
-        #     return r.json()
-        # else:
-        #     return None
+        r = self._post('/space_groups', params={
+            'community_id': cid
+        }, data=data)
+
+        print(r.status_code)
+
+        if r.status_code == 200:
+            return r.json()
+        else:
+            return None
 
 
     # "Space group members" methods
 
     # "Spaces" methods
-    def get_space_index(self, cid):
+    def get_spaces_index(self, cid):
         r = self._get('/spaces', params={
             'community_id': cid,
         })
@@ -121,13 +125,19 @@ class CircleRestClient():
         else:
             return None
 
-    def get_space(self, cid, data):
+    # @doc: https://api.circle.so/#b0e5503e-e553-4b7a-bcfc-2d092b9a1cb0
+    # @url: https://app.circle.so/api/v1/spaces/:id?community_id={{community_id}}
+    def get_space(self, cid, sgid):
 
-        payload = json.loads(data)
+        if cid is None or sgid is None:
+            return None
 
-        r = self._get('/spaces/' + str(payload['id']), params={
-            'community_id': cid,
+        r = self._get('/spaces/' + str(sgid), params={
+            'community_id': str(cid),
         })
+
+        print(r.text)
+        print(r.status_code)
 
         if r.status_code == 200:
             return r.json()
